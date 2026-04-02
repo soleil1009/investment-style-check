@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投資との付き合い方チェック | Soleil FP</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #c2610a;
+  --orange-dark: #9a4d08;
+  --orange-light: #fef3e2;
+  --orange-pale: #fdf8f2;
+  --accent: #e08030;
+  --text: #2a1800;
+  --text-muted: #7a5a3a;
+  --border: #e8d0b0;
+  --white: #ffffff;
+  --bg: #faf5ee;
+  --shadow: 0 2px 12px rgba(194,97,10,0.10);
+  --green: #2e7d52;
+  --green-light: #e8f5ee;
+  --navy: #1a3a6e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--orange);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(194,97,10,0.3);
+  flex-shrink: 0;
+}
+
+.header-icon {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+
+.header-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.02em; }
+.header-sub { font-size: 0.72rem; opacity: 0.8; margin-top: 1px; }
+
+main {
+  flex: 1;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.progress-wrap { margin-bottom: 24px; }
+.progress-info { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.72rem; color: var(--text-muted); }
+.progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--orange); border-radius: 2px; transition: width 0.4s ease; }
+
+.question-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  animation: fadeUp 0.3s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.question-num { font-size: 0.7rem; color: var(--orange); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px; }
+.question-text { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+.question-hint { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; background: var(--orange-pale); border-radius: 8px; padding: 10px 12px; border-left: 3px solid var(--accent); }
+
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice-btn {
+  background: var(--orange-pale);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.choice-btn:hover { border-color: var(--orange); background: var(--orange-light); color: var(--orange-dark); }
+
+.back-btn {
+  display: block;
+  margin-top: 14px;
+  background: none;
+  border: none;
+  color: #b09070;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 0;
+}
+.back-btn:hover { color: var(--text-muted); }
+
+/* ===== 結果画面 ===== */
+.result-screen { display: none; animation: fadeUp 0.5s ease; }
+
+.result-header { text-align: center; margin-bottom: 24px; }
+.result-badge {
+  display: inline-block;
+  background: var(--orange);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.result-title { font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.6; }
+
+/* 優先順位カード */
+.priority-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+.priority-card {
+  background: white;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.priority-card.rank-1 { border-left: 4px solid var(--orange); }
+.priority-card.rank-2 { border-left: 4px solid #e09050; }
+.priority-card.rank-3 { border-left: 4px solid #e8c090; }
+
+.rank-badge {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem;
+}
+.rank-1 .rank-badge { background: var(--orange); color: white; }
+.rank-2 .rank-badge { background: #e09050; color: white; }
+.rank-3 .rank-badge { background: #e8c090; color: white; }
+
+.priority-content { flex: 1; }
+.priority-name { font-size: 0.98rem; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+.priority-reason { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 6px; }
+.priority-tip { font-size: 0.75rem; color: var(--orange-dark); background: var(--orange-light); border-radius: 6px; padding: 7px 10px; line-height: 1.5; }
+
+/* 補足メッセージ */
+.result-note {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.result-note p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.8; }
+
+/* 一般的な考え方 */
+.general-toggle {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+  text-align: left;
+}
+.general-toggle:hover { border-color: var(--orange); color: var(--orange-dark); }
+
+.general-panel {
+  display: none;
+  background: white;
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  animation: fadeUp 0.2s ease;
+}
+.general-panel.open { display: block; }
+
+.general-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--orange-pale);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+.general-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.general-item:last-child { margin-bottom: 0; }
+.general-dot { color: var(--orange); flex-shrink: 0; margin-top: 2px; }
+
+/* 注意書き */
+.disclaimer {
+  font-size: 0.7rem;
+  color: #b0956a;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+/* CTA */
+.cta-card {
+  background: var(--orange);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  color: white;
+  margin-bottom: 16px;
+}
+.cta-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; line-height: 1.5; }
+.cta-text { font-size: 0.82rem; opacity: 0.88; line-height: 1.8; margin-bottom: 18px; }
+.cta-btn {
+  display: block;
+  background: white;
+  color: var(--orange-dark);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.cta-btn:hover { background: var(--orange-light); }
+
+.copy-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  background: white;
+  color: var(--orange-dark);
+  border: none;
+  border-radius: 12px;
+  padding: 13px 20px;
+  font-family: inherit;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+}
+.copy-btn:hover { background: var(--orange-light); }
+.copy-btn.copied { background: var(--orange-light); color: var(--orange); }
+
+.retry-btn {
+  display: block;
+  text-align: center;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 8px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  padding: 4px;
+}
+.retry-btn:hover { color: white; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">🧭</div>
+  <div>
+    <div class="header-title">投資との付き合い方チェック</div>
+    <div class="header-sub">自分に合う距離感を整理できます</div>
+  </div>
+</header>
+
+<main>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-info">
+      <span id="progressLabel">質問 1 / 8</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div id="questionArea"></div>
+  <div class="result-screen" id="resultScreen"></div>
+</main>
+
+<script>
+// ============================================================
+// 質問定義
+// ============================================================
+const QUESTIONS = [
+  {
+    id: 'age',
+    text: '年代を教えてください',
+    choices: ['20代', '30代', '40代', '50代', '60代以上']
+  },
+  {
+    id: 'experience',
+    text: '投資の経験はありますか？',
+    choices: ['ほとんどない', '少しある', '継続経験がある']
+  },
+  {
+    id: 'drawdown',
+    text: '相場が10〜20%下がったとき、どう感じますか？',
+    hint: '今の自分の感覚に近いものを選んでください',
+    choices: [
+      'かなり不安で、すぐ売りたくなると思う',
+      '気になるが、すぐ売るほどではない',
+      '長期前提なら続けられると思う'
+    ]
+  },
+  {
+    id: 'horizon',
+    text: '何年以内に使う予定のお金が多いですか？',
+    hint: '住宅購入・教育費・生活費の補填など',
+    choices: [
+      '3年以内に使う予定が多い',
+      '3〜10年以内に使う予定がある',
+      '10年以上使う予定はあまりない'
+    ]
+  },
+  {
+    id: 'liquidity',
+    text: 'すぐ使える預貯金の余力はありますか？',
+    hint: '生活費の数か月分を目安にお考えください',
+    choices: ['あまりない', 'ある程度ある', '十分ある']
+  },
+  {
+    id: 'continuity',
+    text: '毎月の積立を続けられそうですか？',
+    choices: ['ほとんど難しい', '少額なら可能', 'ある程度可能']
+  },
+  {
+    id: 'liquidity_concern',
+    text: '価格変動より、途中で使えないことの方が気になりますか？',
+    hint: 'iDeCoなど原則60歳まで引き出せない制度について',
+    choices: ['はい、使えないことの方が気になる', 'どちらともいえない', 'いいえ、価格変動の方が気になる']
+  },
+  {
+    id: 'life_events',
+    text: '今後の大きなライフイベントはありますか？',
+    hint: '住宅購入・結婚・出産・教育費のピークなど',
+    choices: ['近い将来に多い', 'いくつかある', '今のところ大きくはない']
+  },
+];
+
+const TOTAL = QUESTIONS.length;
+let currentQ = 0;
+let answers = {};
+
+// ============================================================
+// 判定ロジック
+// ============================================================
+function calcPriorities(a) {
+  const scores = {
+    low_volatility: 0,      // 価格変動は抑えめ
+    small_start: 0,         // 少額から慣れる
+    long_term: 0,           // 長期積立と相性よい
+    cash_first: 0,          // 現金余力を厚く
+    avoid_lock: 0,          // 資金拘束に慎重
+    diversified: 0,         // 分散で考えやすい
+    distance_first: 0,      // まず距離を近づけすぎない
+    next_stage: 0,          // 制度・配分の整理段階
+  };
+
+  // 価格変動は抑えめ
+  if (a.drawdown === 'かなり不安で、すぐ売りたくなると思う') scores.low_volatility += 35;
+  if (a.experience === 'ほとんどない') scores.low_volatility += 20;
+  if (a.horizon === '3年以内に使う予定が多い') scores.low_volatility += 15;
+  if (a.liquidity === 'あまりない') scores.low_volatility += 15;
+  if (a.life_events === '近い将来に多い') scores.low_volatility += 10;
+
+  // 少額から慣れる
+  if (a.experience === 'ほとんどない') scores.small_start += 25;
+  if (a.experience === '少しある') scores.small_start += 15;
+  if (a.continuity === '少額なら可能') scores.small_start += 25;
+  if (a.drawdown === '気になるが、すぐ売るほどではない') scores.small_start += 15;
+  if (a.drawdown === 'かなり不安で、すぐ売りたくなると思う') scores.small_start += 10;
+
+  // 長期積立と相性よい
+  if (a.horizon === '10年以上使う予定はあまりない') scores.long_term += 30;
+  if (a.drawdown === '長期前提なら続けられると思う') scores.long_term += 25;
+  if (a.continuity === 'ある程度可能') scores.long_term += 20;
+  if (a.life_events === '今のところ大きくはない') scores.long_term += 15;
+  if (a.drawdown !== 'かなり不安で、すぐ売りたくなると思う') scores.long_term += 5;
+
+  // 現金余力を厚く
+  if (a.liquidity === 'あまりない') scores.cash_first += 35;
+  if (a.horizon === '3年以内に使う予定が多い') scores.cash_first += 25;
+  if (a.life_events === '近い将来に多い') scores.cash_first += 20;
+  if (a.liquidity_concern === 'はい、使えないことの方が気になる') scores.cash_first += 15;
+  if (a.continuity === 'ほとんど難しい') scores.cash_first += 10;
+
+  // 資金拘束に慎重
+  if (a.liquidity_concern === 'はい、使えないことの方が気になる') scores.avoid_lock += 35;
+  if (a.horizon === '3年以内に使う予定が多い') scores.avoid_lock += 25;
+  if (a.liquidity === 'あまりない') scores.avoid_lock += 15;
+  if (a.life_events === '近い将来に多い') scores.avoid_lock += 15;
+  if (a.liquidity_concern === 'どちらともいえない') scores.avoid_lock += 10;
+
+  // 分散で考えやすい
+  if (a.horizon === '10年以上使う予定はあまりない') scores.diversified += 25;
+  if (a.liquidity === '十分ある') scores.diversified += 20;
+  if (a.drawdown === '長期前提なら続けられると思う') scores.diversified += 20;
+  if (a.experience !== 'ほとんどない') scores.diversified += 15;
+  if (a.continuity === 'ある程度可能') scores.diversified += 10;
+  if (a.life_events === '今のところ大きくはない') scores.diversified += 10;
+
+  // まず距離を近づけすぎない
+  if (a.liquidity === 'あまりない') scores.distance_first += 25;
+  if (a.continuity === 'ほとんど難しい') scores.distance_first += 25;
+  if (a.horizon === '3年以内に使う予定が多い') scores.distance_first += 20;
+  if (a.drawdown === 'かなり不安で、すぐ売りたくなると思う') scores.distance_first += 20;
+  if (a.experience === 'ほとんどない') scores.distance_first += 10;
+  if (a.life_events === '近い将来に多い') scores.distance_first += 10;
+
+  // 制度・配分の整理段階
+  if (a.liquidity === '十分ある') scores.next_stage += 30;
+  if (a.horizon === '10年以上使う予定はあまりない') scores.next_stage += 25;
+  if (a.drawdown === '長期前提なら続けられると思う') scores.next_stage += 20;
+  if (a.continuity === 'ある程度可能') scores.next_stage += 15;
+  if (a.experience === '継続経験がある') scores.next_stage += 20;
+  if (a.life_events === '今のところ大きくはない') scores.next_stage += 15;
+  if (a.liquidity_concern === 'いいえ、価格変動の方が気になる') scores.next_stage += 10;
+
+  return Object.entries(scores)
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([key]) => key);
+}
+
+// ============================================================
+// 結果テキスト定義
+// ============================================================
+const RESULT_DATA = {
+  low_volatility: {
+    name: '価格変動は抑えめにした方が自然',
+    icon: '🛡️',
+    reason: '値動きへの不安がやや強く、近い将来使う予定資金もある状態では、最初から大きくリスクを取りすぎない方が整理しやすい状態です。',
+    tip: '安定性を重視した配分から始め、慣れてきたら少しずつ見直す進め方が自然です。'
+  },
+  small_start: {
+    name: '少額の積立から慣れる方が自然',
+    icon: '🌱',
+    reason: '投資経験が浅い段階では、一括で大きく入れるより、少額から慣れる方が長続きしやすい状態です。まず「続けられる金額」を見つけることが先決です。',
+    tip: '月1〜3万円程度の少額から始めて、値動きに慣れることが最初の一歩として自然です。'
+  },
+  long_term: {
+    name: '長期の積立と相性がよい',
+    icon: '📅',
+    reason: '長期で置ける資金があり、毎月の積立も続けやすそうな状態です。長期・積立・分散の考え方と相性がよい前提が整っています。',
+    tip: '時間を味方にする積立の仕組みを活用することで、少額でも資産形成を続けやすくなります。'
+  },
+  cash_first: {
+    name: '現金余力を厚めに残す方が自然',
+    icon: '💰',
+    reason: '近い将来の支出予定や生活の余力を考えると、今は手元の現金を厚めに保つことを優先した方が、全体のバランスが整いやすい状態です。',
+    tip: '生活費の3〜6か月分を目安に現金を確保してから、余裕分を運用に回す順番が自然です。'
+  },
+  avoid_lock: {
+    name: '資金拘束の強い制度は慎重に考える方がよい',
+    icon: '🔓',
+    reason: '途中で使えないことへの不安が強い、または近い将来使う予定があるため、柔軟性を重視した方が整理しやすい状態です。',
+    tip: '原則60歳まで引き出せない制度の利用は、家計全体の流動性を確認してから検討することが自然です。'
+  },
+  diversified: {
+    name: 'ある程度の値動きを受け入れながら分散で考えやすい',
+    icon: '🌐',
+    reason: '長期で置ける資金があり、預貯金余力もある状態です。ある程度の値動きを許容しながら、分散した形での積立を考えやすい前提が整っています。',
+    tip: '一つの資産に偏らず、複数の地域・資産クラスに分散する考え方が取り入れやすい状態です。'
+  },
+  distance_first: {
+    name: 'まずは投資との距離を近づけすぎない方が自然',
+    icon: '⚠️',
+    reason: '預貯金余力や毎月の積立余力がかなり限られている状態では、無理に投資を始めるより、まず家計の土台を整えることが先決です。',
+    tip: '投資は「余裕資金でやるもの」という前提が整ってから始める方が、長続きしやすくなります。'
+  },
+  next_stage: {
+    name: '前提は整っているので、次は制度や配分の整理段階',
+    icon: '⚙️',
+    reason: '投資の基本的な前提が整っている状態です。次のテーマは、NISAやiDeCoなどの制度の使い方や、資産の配分バランスを整理することです。',
+    tip: '感覚で続けているものを一度全体で整理すると、より効率的な運用の進め方が見えやすくなります。'
+  },
+};
+
+// ============================================================
+// 描画
+// ============================================================
+function render() {
+  if (currentQ >= TOTAL) { showResult(); return; }
+  updateProgress();
+
+  const q = QUESTIONS[currentQ];
+  const area = document.getElementById('questionArea');
+  area.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.innerHTML = `
+    <div class="question-num">質問 ${currentQ + 1} / ${TOTAL}</div>
+    <div class="question-text">${q.text}</div>
+    ${q.hint ? `<div class="question-hint">${q.hint}</div>` : ''}
+  `;
+
+  const choices = document.createElement('div');
+  choices.className = 'choices';
+  q.choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    btn.addEventListener('click', () => {
+      answers[q.id] = c;
+      currentQ++;
+      render();
+    });
+    choices.appendChild(btn);
+  });
+  card.appendChild(choices);
+
+  if (currentQ > 0) {
+    const back = document.createElement('button');
+    back.className = 'back-btn';
+    back.textContent = '← 前の質問に戻る';
+    back.addEventListener('click', () => { currentQ--; render(); });
+    card.appendChild(back);
+  }
+
+  area.appendChild(card);
+}
+
+function updateProgress() {
+  const pct = Math.round((currentQ / TOTAL) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `質問 ${currentQ + 1} / ${TOTAL}`;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function showResult() {
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('questionArea').style.display = 'none';
+
+  const priorities = calcPriorities(answers);
+  const resultScreen = document.getElementById('resultScreen');
+  resultScreen.style.display = 'block';
+
+  const rankLabels = ['1位', '2位', '3位'];
+  const rankClasses = ['rank-1', 'rank-2', 'rank-3'];
+
+  const cardsHTML = priorities.map((key, i) => {
+    const d = RESULT_DATA[key];
+    return `
+      <div class="priority-card ${rankClasses[i]}">
+        <div class="rank-badge">${rankLabels[i]}</div>
+        <div class="priority-content">
+          <div class="priority-name">${d.icon} ${d.name}</div>
+          <div class="priority-reason">${d.reason}</div>
+          <div class="priority-tip">💡 ${d.tip}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  resultScreen.innerHTML = `
+    <div class="result-header">
+      <div class="result-badge">診断結果</div>
+      <div class="result-title">今のあなたに自然な、<br>投資との付き合い方</div>
+    </div>
+
+    <div class="priority-cards">${cardsHTML}</div>
+
+    <div class="result-note">
+      <p>投資は、商品を先に決めるより、どの距離感なら続けやすいかを整理する方が先です。前提が変われば、制度や配分の考え方も変わります。</p>
+    </div>
+
+    <button class="general-toggle" onclick="toggleGeneral()">📌 参考になる一般的な考え方を見る</button>
+    <div class="general-panel" id="generalPanel">
+      <div class="general-note">これは一般的な考え方です。あなた専用の提案ではありません。実際には、家計、他の資産、使う時期、値動きへの耐性によって変わります。</div>
+      <div class="general-item"><span class="general-dot">◆</span>値動きを抑えたい人は、現金や債券を厚めにしやすい</div>
+      <div class="general-item"><span class="general-dot">◆</span>長く積み立てる前提なら、分散された株式比率を高める考え方もある</div>
+      <div class="general-item"><span class="general-dot">◆</span>資金拘束を避けたい人は、制度選びも含めて柔軟性を重視しやすい</div>
+    </div>
+
+    <div class="disclaimer">
+      ※この診断は簡易チェックです。投資との付き合い方は、年齢、資産、投資経験、ライフイベント、性格などで変わります。この診断は個別商品の推奨を行うものではありません。実際の制度利用や資産配分は、家計全体の確認が必要です。
+    </div>
+
+    <div class="cta-card">
+      <div class="cta-title">付き合い方が見えた今、<br>一度全体で整理してみませんか？</div>
+      <div class="cta-text">家計、制度、保障、将来の予定まで含めて確認すると、無理のない投資の進め方が見えやすくなります。</div>
+      <a href="#" class="cta-btn">個別で整理する →</a>
+      <a href="#" class="cta-btn">自分に合う進め方を確認する →</a>
+    </div>
+
+    <button class="copy-btn" onclick="copyResult()">📋 この結果をコピーしてLINEで保存する</button>
+    <button class="retry-btn" onclick="resetApp()">↺ もう一度診断する</button>
+  `;
+}
+
+function copyResult() {
+  const priorities = calcPriorities(answers);
+  const lines = ['【投資との付き合い方チェック 診断結果】', ''];
+  priorities.forEach((key, i) => {
+    const d = RESULT_DATA[key];
+    lines.push(`${i+1}位 ${d.name}`);
+    lines.push(d.reason);
+    lines.push('');
+  });
+  lines.push('※この診断は簡易チェックです。実際の制度利用や資産配分は、家計全体の確認が必要です。');
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ コピーしました！LINEに貼り付けてください';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 この結果をコピーしてLINEで保存する';
+      btn.classList.remove('copied');
+    }, 3000);
+  });
+}
+
+function toggleGeneral() {
+  document.getElementById('generalPanel').classList.toggle('open');
+}
+
+function resetApp() {
+  currentQ = 0;
+  answers = {};
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('questionArea').style.display = 'block';
+  document.getElementById('resultScreen').style.display = 'none';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
