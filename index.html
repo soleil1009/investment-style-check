@@ -133,6 +133,25 @@ main {
   border-radius: 20px;
   margin-bottom: 12px;
 }
+.result-type-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  border: 1px solid var(--orange);
+  border-radius: 20px;
+  padding: 3px 14px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.result-not-now {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
 .result-title { font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.6; }
 
 /* 優先順位カード */
@@ -483,48 +502,72 @@ function calcPriorities(a) {
 // ============================================================
 const RESULT_DATA = {
   low_volatility: {
+    typeLabel: '守り重視タイプ',
+    conclusionTitle: '今は、値動きを抑えた進め方が自然です',
+    notNow: '今は、大きく増やすことより、値動きに耐えられずやめてしまうことを避ける方が大事です。',
     name: '価格変動は抑えめにした方が自然',
     icon: '🛡️',
     reason: '値動きへの不安がやや強く、近い将来使う予定資金もある状態では、最初から大きくリスクを取りすぎない方が整理しやすい状態です。',
     tip: '安定性を重視した配分から始め、慣れてきたら少しずつ見直す進め方が自然です。'
   },
   small_start: {
+    typeLabel: '少額で慣れるタイプ',
+    conclusionTitle: '今は、少額から慣れる進め方が自然です',
+    notNow: '今は、まとまった金額で始めることより、続けられる金額を見つけることが先決です。',
     name: '少額の積立から慣れる方が自然',
     icon: '🌱',
     reason: '投資経験が浅い段階では、一括で大きく入れるより、少額から慣れる方が長続きしやすい状態です。まず「続けられる金額」を見つけることが先決です。',
     tip: '月1〜3万円程度の少額から始めて、値動きに慣れることが最初の一歩として自然です。'
   },
   long_term: {
+    typeLabel: '長期積立と相性がよいタイプ',
+    conclusionTitle: '今は、長期の積立を軸に進める段階です',
+    notNow: '今は、短期の値動きを追うことより、時間を味方にした積み上げを優先する方が自然です。',
     name: '長期の積立と相性がよい',
     icon: '📅',
     reason: '長期で置ける資金があり、毎月の積立も続けやすそうな状態です。長期・積立・分散の考え方と相性がよい前提が整っています。',
     tip: '時間を味方にする積立の仕組みを活用することで、少額でも資産形成を続けやすくなります。'
   },
   cash_first: {
+    typeLabel: '現金余力優先タイプ',
+    conclusionTitle: '今は、投資より先に現金余力を厚くする方が自然です',
+    notNow: '今は、運用額を増やすことより、手元資金を厚くする方が自然です。',
     name: '現金余力を厚めに残す方が自然',
     icon: '💰',
     reason: '近い将来の支出予定や生活の余力を考えると、今は手元の現金を厚めに保つことを優先した方が、全体のバランスが整いやすい状態です。',
     tip: '生活費の3〜6か月分を目安に現金を確保してから、余裕分を運用に回す順番が自然です。'
   },
   avoid_lock: {
+    typeLabel: '柔軟性重視タイプ',
+    conclusionTitle: '今は、資金を縛りすぎない進め方が自然です',
+    notNow: '今は、制度に無理に入ることより、いつでも動かせる柔軟性を保つ方が大事です。',
     name: '資金拘束の強い制度は慎重に考える方がよい',
     icon: '🔓',
     reason: '途中で使えないことへの不安が強い、または近い将来使う予定があるため、柔軟性を重視した方が整理しやすい状態です。',
     tip: '原則60歳まで引き出せない制度の利用は、家計全体の流動性を確認してから検討することが自然です。'
   },
   diversified: {
+    typeLabel: '分散で考えやすいタイプ',
+    conclusionTitle: '今は、分散を意識した積立を進めやすい段階です',
+    notNow: '今は、一つの商品に集中するより、複数に分けて考える方が自然です。',
     name: 'ある程度の値動きを受け入れながら分散で考えやすい',
     icon: '🌐',
     reason: '長期で置ける資金があり、預貯金余力もある状態です。ある程度の値動きを許容しながら、分散した形での積立を考えやすい前提が整っています。',
     tip: '一つの資産に偏らず、複数の地域・資産クラスに分散する考え方が取り入れやすい状態です。'
   },
   distance_first: {
+    typeLabel: '土台優先タイプ',
+    conclusionTitle: '今は、投資より先に家計の土台を整える段階です',
+    notNow: '今は、投資を始めることより、まず家計の余白を作ることが先決です。',
     name: 'まずは投資との距離を近づけすぎない方が自然',
     icon: '⚠️',
     reason: '預貯金余力や毎月の積立余力がかなり限られている状態では、無理に投資を始めるより、まず家計の土台を整えることが先決です。',
     tip: '投資は「余裕資金でやるもの」という前提が整ってから始める方が、長続きしやすくなります。'
   },
   next_stage: {
+    typeLabel: '最適化段階タイプ',
+    conclusionTitle: '今は、投資を始めるより制度や配分を整理する段階です',
+    notNow: '今は、新しく始めることより、今あるものを整理する方が効果が出やすい段階です。',
     name: '前提は整っているので、次は制度や配分の整理段階',
     icon: '⚙️',
     reason: '投資の基本的な前提が整っている状態です。次のテーマは、NISAやiDeCoなどの制度の使い方や、資産の配分バランスを整理することです。',
@@ -609,10 +652,14 @@ function showResult() {
     `;
   }).join('');
 
+  const top = RESULT_DATA[priorities[0]];
+
   resultScreen.innerHTML = `
     <div class="result-header">
       <div class="result-badge">診断結果</div>
-      <div class="result-title">今のあなたに自然な、<br>投資との付き合い方</div>
+      <div class="result-type-label">${top.typeLabel}</div>
+      <div class="result-title">${top.conclusionTitle}</div>
+      <div class="result-not-now">${top.notNow}</div>
     </div>
 
     <div class="priority-cards">${cardsHTML}</div>
