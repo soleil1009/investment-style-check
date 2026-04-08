@@ -273,8 +273,8 @@ main {
 .cta-text { font-size: 0.82rem; opacity: 0.88; line-height: 1.8; margin-bottom: 18px; }
 .cta-btn {
   display: block;
-  background: white;
-  color: var(--orange-dark);
+  background: var(--orange);
+  color: white;
   border: none;
   border-radius: 12px;
   padding: 14px 20px;
@@ -286,42 +286,44 @@ main {
   margin-bottom: 8px;
   transition: all 0.2s;
   text-decoration: none;
+  text-align: center;
 }
 .cta-btn:hover { background: var(--orange-light); }
 
 .copy-btn {
   display: block;
   width: 100%;
-  text-align: center;
-  background: rgba(255,255,255,0.15);
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 8px;
   background: white;
-  color: var(--orange-dark);
-  border: none;
+  color: var(--orange);
+  border: 1.5px solid var(--orange);
   border-radius: 12px;
   padding: 13px 20px;
+  font-size: 0.85rem;
   font-family: inherit;
-  transition: all 0.2s;
+  font-weight: 700;
+  cursor: pointer;
   margin-bottom: 8px;
+  transition: all 0.2s;
+  text-align: center;
 }
 .copy-btn:hover { background: var(--orange-light); }
 .copy-btn.copied { background: var(--orange-light); color: var(--orange); }
 
 .retry-btn {
   display: block;
-  text-align: center;
+  width: 100%;
+  background: white;
   color: var(--orange);
-  font-size: 0.78rem;
-  cursor: pointer;
-  margin-top: 8px;
-  background: none;
-  border: none;
+  border: 1.5px solid var(--orange-light);
+  border-radius: 12px;
+  padding: 13px 20px;
+  font-size: 0.85rem;
   font-family: inherit;
-  padding: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+  text-align: center;
 }
 .retry-btn:hover { color: white; }
 </style>
@@ -681,7 +683,7 @@ function showResult() {
     </div>
 
     <button class="copy-btn" onclick="copyResult()">📋 この結果をコピーしてLINEで保存する</button>
-    <div class="cta-card"><a href="#" class="cta-btn">LINEに戻る</a></div>
+    <a href="#" class="cta-btn">LINEに戻る</a>
     <button class="retry-btn" onclick="resetApp()">↺ もう一度試す</button>
   `;
 }
